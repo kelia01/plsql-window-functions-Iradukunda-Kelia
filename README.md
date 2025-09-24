@@ -42,6 +42,9 @@ Smooth out monthly fluctuations to track overall seller performance trends.
 | **products**  | Product catalog  | `product_id (PK)`, seller\_id (FK), name, category                         | 3001, 2001, Battery Pack, Electronics |
 | **reviews**   | Customer reviews | `review_id (PK)`, customer\_id (FK), seller\_id (FK), rating, review\_date | 4001, 1001, 2001, 5, 2025-01-15       |
 
+### ER diagram
+<img width="1018" height="715" alt="image" src="https://github.com/user-attachments/assets/a0cd47ff-bf2a-439a-901b-af1fa5980841" />
+
 
 
 
