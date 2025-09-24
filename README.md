@@ -1,6 +1,6 @@
 # Electronic_retail
 
-## 1. Problem definition:
+## Step 1: Problem definition:
 ### Business Context:
 - Company type: An e-commerce marketplace for electronic device parts (batteries, chargers, ...).
 - Data challenge: Sales and Customer Experience.
@@ -16,7 +16,7 @@ Show trends in review frequency over time.
 
 The result will be a report that helps customers choose reliable sellers and motivates other vendors to improve quality.
 
-## 2. Success criteria
+## Step 2: Success criteria
 
 ### Top 5 most trusted sellers per product category/region → RANK()
 Rank sellers based on average customer ratings or trust score within each category or region
@@ -32,6 +32,16 @@ Divide customers into 4 groups based on number of purchases or review frequency,
 
 ### 3-month moving average of seller ratings or sales → AVG() OVER()
 Smooth out monthly fluctuations to track overall seller performance trends.
+
+## Step 3: Database schema
+
+| Table         | Purpose          | Key Columns                                                                | Example Row                           |
+| ------------- | ---------------- | -------------------------------------------------------------------------- | ------------------------------------- |
+| **customers** | Customer info    | `customer_id (PK)`, name, region                                           | 1001, Jose Mutoni, Kigali                |
+| **sellers**   | Seller info      | `seller_id (PK)`, name, trust\_score, region                               | 2001, TechParts Ltd, 4.6, Kigali      |
+| **products**  | Product catalog  | `product_id (PK)`, seller\_id (FK), name, category                         | 3001, 2001, Battery Pack, Electronics |
+| **reviews**   | Customer reviews | `review_id (PK)`, customer\_id (FK), seller\_id (FK), rating, review\_date | 4001, 1001, 2001, 5, 2025-01-15       |
+
 
 
 
