@@ -40,10 +40,60 @@ Smooth out monthly fluctuations to track overall seller performance trends.
 | **customers** | Customer info    | `customer_id (PK)`, name, region                                           | 1001, Jose Mutoni, Kigali                |
 | **sellers**   | Seller info      | `seller_id (PK)`, name, trust\_score, region                               | 2001, TechParts Ltd, 4.6, Kigali      |
 | **products**  | Product catalog  | `product_id (PK)`, seller\_id (FK), name, category                         | 3001, 2001, Battery Pack, Electronics |
-| **reviews**   | Customer reviews | `review_id (PK)`, customer\_id (FK), seller\_id (FK), rating, review\_date | 4001, 1001, 2001, 5, 2025-01-15       |
+| **reviews**   | Customer reviews | `review_id (PK)`, customer\_id (FK), product\_id (FK), rating, review\_date | 4001, 1001, 2001, 5, 2025-01-15       |
 
 ### ER diagram
-<img width="1018" height="715" alt="image" src="https://github.com/user-attachments/assets/a0cd47ff-bf2a-439a-901b-af1fa5980841" />
+<img width="1074" height="726" alt="image" src="https://github.com/user-attachments/assets/584b9b12-1c95-4640-a01f-457e52609998" />
+
+## Step 4: Window functions implementation
+
+## Step 5: Results analysis
+
+### Insights in 3 layers
+
+### Descriptive (What happened):
+- Top sellers: Ranking showed that in different product category only a few sellers consistently show in the top 5 trusted sellers.
+- Sales & Reviews Growth: The running total revealed steady cumulative growth for some sellers, while others plateaued after an initial spike.
+- Smoothing: The 3-month moving average confirmed that some sellers maintain consistent trust, while others fluctuate due to irregular product quality or late deliveries.
+- Customer Segments: We saw that the top 25% of customers contribute more than 60% of reviews and purchases, indicating a strong influence from “power buyers.”
+
+### Diagnostic (Why did it happen?):
+- Reliable sellers rank higher because they consistently ship on time, provide quality parts, and engage well with customers.
+- Positive growth sellers usually improved ratings after adopting better packaging and faster response to negative reviews.
+- Engaged customers leave detailed reviews that influence trust rankings more than one-time buyers.
+
+### Prescriptive (What next?):
+- Highlight Top Sellers: Display badges for the most trusted sellers on the platform, encouraging customers to prefer them.
+- Support Struggling Sellers: Provide training and quality improvement programs for sellers with declining ratings.
+- Customer Engagement Programs: Offer loyalty rewards to highly active reviewers to encourage consistent, quality feedback.
+- Strategic Growth: Use the moving average trend to identify which sellers are stable and worth promoting in marketing campaigns.
+
+## Step 6: References
+
+References
+
+1. 1WorldSync. (2024). How ratings and reviews impact e-commerce sales. 1WorldSync Resource Center. https://1worldsync.com/resource-center/blog/how-ratings-and-reviews-impact-e-commerce-sales/
+
+2. Ministry of Home Affairs Singapore. (2025). E-commerce marketplace transaction safety ratings 2025 [Press release]. https://www.mha.gov.sg/mediaroom/press-releases/e-commerce-marketplace-transaction-safety-ratings-2025
+
+3. ProjectPro. (n.d.). Types of analytics: Descriptive, predictive, prescriptive analytics. https://www.projectpro.io/article/types-of-analytics-descriptive-predictive-prescriptive-analytics/209
+
+4. Domo. (n.d.). The 4 types of data analytics. Domo Learn. https://www.domo.com/learn/article/data-analytics-types
+
+5. InsightSoftware. (n.d.). Comparing descriptive, predictive, prescriptive, and diagnostic analytics. InsightSoftware Blog. https://insightsoftware.com/blog/comparing-descriptive-predictive-prescriptive-and-diagnostic-analytics/
+
+6. GeeksforGeeks. (n.d.). Window functions in SQL. https://www.geeksforgeeks.org/sql/window-functions-in-sql/
+
+7. Mode Analytics. (n.d.). Window functions in SQL. Mode SQL Tutorial. https://mode.com/sql-tutorial/sql-window-functions
+
+8. Anthropic. (2024). Claude [Large language model]. https://claude.ai
+
+9. Google. (2024). Google AI Overviews [AI-powered search feature]. Google Search. https://www.google.com
+
+10. FreeCodeCamp. (n.d.). Window functions in SQL. FreeCodeCamp News. https://www.freecodecamp.org/news/window-functions-in-sql/
+
+“All sources were properly cited. Implementations and analysis represent original work. No AI-generated content was copied without attribution or adaptation.”
+
 
 
 
