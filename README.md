@@ -48,7 +48,7 @@ Smooth out monthly fluctuations to track overall seller performance trends.
 ## Step 4: Window functions implementation
 ### Ranking: 
 ```
-//
+// use ranking window functions to rank sellers by trust_score per region
 SELECT 
     seller_id,
     name,
@@ -67,6 +67,21 @@ FROM sellers;
 These functions assign positions to sellers within each region based on trust_score ROW_NUMBER gives strict order, RANK and DENSE_RANK show the highest, PERCENT_RANK shows each seller’s relative standing as a percentile.
 
 ## Aggregate:
+ ```
+// Use aggregate function to calculate sum of trust_score of sellers per region
+SELECT 
+    seller_id,
+    name,
+    region,
+    trust_score,
+    SUM(trust_score) 
+    OVER (
+      PARTITION BY REGION ORDER BY SELLER_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS running_trust_total
+FROM sellers;
+```
+### Screenshot:
+![Uploading image.png…]()
 
 
 ## Step 5: Results analysis
