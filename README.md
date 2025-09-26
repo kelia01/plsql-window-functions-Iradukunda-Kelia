@@ -46,13 +46,35 @@ Smooth out monthly fluctuations to track overall seller performance trends.
 <img width="1074" height="726" alt="image" src="https://github.com/user-attachments/assets/584b9b12-1c95-4640-a01f-457e52609998" />
 
 ## Step 4: Window functions implementation
+### Ranking: 
+```
+//
+SELECT 
+    seller_id,
+    name,
+    region,
+    trust_score,
+    ROW_NUMBER() OVER (PARTITION BY region ORDER BY trust_score DESC) AS row_num,
+    RANK()       OVER (PARTITION BY region ORDER BY trust_score DESC) AS rank,
+    DENSE_RANK() OVER (PARTITION BY region ORDER BY trust_score DESC) AS dense_rank,
+    PERCENT_RANK() OVER (PARTITION BY region ORDER BY trust_score DESC) AS percent_rank
+FROM sellers;
+```
+### screenshot
+<img width="1162" height="817" alt="image" src="https://github.com/user-attachments/assets/a1025658-eaf6-48db-901c-dbeab1eb4e4c" />
+
+### Interpretation: 
+These functions assign positions to sellers within each region based on trust_score ROW_NUMBER gives strict order, RANK and DENSE_RANK show the highest, PERCENT_RANK shows each seller’s relative standing as a percentile.
+
+## Aggregate:
+
 
 ## Step 5: Results analysis
 
 ### Insights in 3 layers
 
 ### Descriptive (What happened):
-- Top sellers: Ranking showed that in different product category only a few sellers consistently show in the top 5 trusted sellers.
+- Top sellers: Ranking showed that in different product category, only a few sellers consistently show in the top 5 trusted sellers.
 - Sales & Reviews Growth: The running total revealed steady cumulative growth for some sellers, while others plateaued after an initial spike.
 - Smoothing: The 3-month moving average confirmed that some sellers maintain consistent trust, while others fluctuate due to irregular product quality or late deliveries.
 - Customer Segments: We saw that the top 25% of customers contribute more than 60% of reviews and purchases, indicating a strong influence from “power buyers.”
