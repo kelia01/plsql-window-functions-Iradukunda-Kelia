@@ -47,6 +47,8 @@ Smooth out monthly fluctuations to track overall seller performance trends.
 
 ## Step 4: Window functions implementation
 ### Ranking: 
+
+### Query
 ```
 // use ranking window functions to rank sellers by trust_score per region
 SELECT 
@@ -66,23 +68,87 @@ FROM sellers;
 ### Interpretation: 
 These functions assign positions to sellers within each region based on trust_score ROW_NUMBER gives strict order, RANK and DENSE_RANK show the highest, PERCENT_RANK shows each seller’s relative standing as a percentile.
 
-## Aggregate:
+### Aggregate:
+
+### Query:
  ```
-// Use aggregate function to calculate sum of trust_score of sellers per region
-SELECT 
-    seller_id,
-    name,
-    region,
-    trust_score,
-    SUM(trust_score) 
-    OVER (
-      PARTITION BY REGION ORDER BY SELLER_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    ) AS running_trust_total
-FROM sellers;
+// Use aggregate function to calculate running_avg_rating of each seller and ordering by the review_date
+
+select r.review_id, s.seller_id, s.name, r.rating, r.review_date,
+AVG(r.rating) OVER (
+PARTITION BY s.SELLER_ID ORDER BY r.REVIEW_DATE ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_avg_rating
+from reviews r 
+JOIN PRODUCTS p ON r.PRODUCT_ID = p.PRODUCT_ID
+JOIN SELLERS s ON p.SELLER_ID = s.SELLER_ID
+ORDER BY s.seller_id, r.review_date;
 ```
 ### Screenshot:
-![Uploading image.png…]()
+<img width="1333" height="658" alt="image" src="https://github.com/user-attachments/assets/5e2940a3-d668-4551-acc5-09a30c9c64d7" />
 
+### Interpretation:
+This query helps to accumulate the average rating of a particular seller using their id 
+and it orders by their review_date, this shows the performance of a seller over time.
+
+### Navigation:
+
+### Query:
+```
+// Navigation window functions to show if the seller ratings are declining or improving
+
+select r.review_id, s.seller_id, s.name, r.rating, r.review_date,
+LAG(r.rating) OVER (
+PARTITION BY s.SELLER_ID ORDER BY r.REVIEW_DATE) AS prev_rating,
+
+LEAD(r.rating) OVER (
+PARTITION BY s.SELLER_ID ORDER BY r.REVIEW_DATE) AS next_rating
+
+from REVIEWS r
+JOIN PRODUCTS p ON r.PRODUCT_ID = p.PRODUCT_ID
+JOIN SELLERS s ON p.SELLER_ID = s.SELLER_ID
+ORDER BY s.seller_id, r.review_date;
+```
+
+### screenshot:
+<img width="977" height="675" alt="image" src="https://github.com/user-attachments/assets/e04c6f16-9131-459b-85e5-1e98e5ced841" />
+
+### Interpretation:
+The query is responsible for showing if the seller is getting good reviews or if they are declining and also it would
+help to know if the seller is getting the review for the first time.
+
+### Distribution
+
+### Query:
+```
+// Find average rating to help in finding the quantile and cumulative distribution
+
+select s.seller_id, s.name, avg(r.rating) as avg_rating
+from sellers s
+join products p on s.seller_id = p.seller_id
+join reviews r on p.product_id = r.product_id
+group by s.seller_id, s.name;
+
+// Calculating average and cumulative distribution
+
+select s.seller_id, s.name, avg(r.rating) as avg_rating,
+
+NTILE(4) OVER (ORDER BY avg(rating) DESC) as rating_quantile,
+
+CUME_DIST() OVER (ORDER BY avg(rating) DESC) AS rating_cume_dist
+
+from sellers s
+join products p on s.seller_id = p.seller_id
+join reviews r on p.product_id = r.product_id
+group by s.seller_id, s.name
+order by avg(rating) desc;
+```
+
+### screenshot:
+<img width="890" height="654" alt="image" src="https://github.com/user-attachments/assets/db3f9536-09a7-4625-97d0-7fddf8918843" />
+
+### Interpretation:
+This query is a combination of different window functions to help us find the quantile and know the highest and lowest seller ratings,
+be able to see the quotient of rows less than or equal to the current one and the total rows through cumulative distribution which helps us
+to know which sellers are not performing well maybe they need trainings or other things.
 
 ## Step 5: Results analysis
 
